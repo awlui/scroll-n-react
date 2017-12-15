@@ -7,12 +7,17 @@
     "jsx": "react",
     "noEmitHelpers": true,
     "sourceMap": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "types": ["react-dom", "node"],
+    "baseUrl": "types",
+    "typeRoots": [
+      "types"
+]
   },
       "include": [
-          "**/*.ts"
+          "**/*.ts",
       ],
       "exclude": [
-        "**/*.spec.ts"
+        "**/*.spec.ts",
       ]
 }

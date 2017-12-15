@@ -11,9 +11,9 @@ const PATHS = {
 const commonConfig = merge([
   {
     entry: {
-      index: './index'
+      index: './src/index'
     },
-    context: PATHS.src,
+    // context: process.cwd(),
     output: {
       path: PATHS.build,
       filename: '[name].[hash].js'
