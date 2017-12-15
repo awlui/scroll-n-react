@@ -6,7 +6,7 @@ module.exports = merge([
   devServer: {
     historyApiFallback: true,
     stats: 'errors-only',
-    contentBase: path.resolve('build'),
+    contentBase: 'build',
     overlay: {
       errors: true,
       warnings: true,

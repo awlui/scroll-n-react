@@ -12,10 +12,10 @@ const commonConfig = merge([
     entry: {
       index: './index'
     },
-    context: path.join(process.cwd(), 'src'),
+    context: PATHS.src,
     output: {
       path: PATHS.build,
-      filename: '[name].js'
+      filename: '[name].[hash].js'
     },
     resolve: {
         extensions: ['.ts', '.tsx', '.js']
@@ -24,9 +24,12 @@ const commonConfig = merge([
       rules: [
         {
           test: /\.tsx?$/,
-          include: PATHS.src,
           enforce: 'pre',
           loader: 'tslint-loader'
+        },
+        {
+          test: /\.tsx?$/,
+          loader: 'ts-loader'
         }
       ]
     }

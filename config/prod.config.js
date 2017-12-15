@@ -1,9 +1,12 @@
 const merge = require('webpack-merge');
-const TypedocWebpackPlugin = require('typedoc-webpack-plugin');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
+const path = require('path');
 module.exports = merge([
 {
   plugins: [
-    new TypedocWebpackPlugin({}, ['./src'])
+    new CleanWebpackPlugin(['build'], {
+      root: process.cwd()
+    })
   ],
   devtool: 'none'
 }
