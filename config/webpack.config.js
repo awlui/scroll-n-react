@@ -1,48 +1,23 @@
-// const HtmlWebpackPlugin = require('html-webpack-plugin');
-const path = require('path');
 const merge = require('webpack-merge');
-const developmentConfig = require('./dev.config');
-const productionConfig = require('./prod.config');
-const PATHS = {
-  src: path.join(process.cwd(), 'src'),
-  build: path.join(process.cwd(), 'build'),
-};
-const commonConfig = merge([
-  {
-    entry: {
-      index: './index'
+const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+module.exports = merge([
+{
+  devServer: {
+    historyApiFallback: true,
+    stats: 'errors-only',
+    contentBase: 'build',
+    overlay: {
+      errors: true,
+      warnings: true,
     },
-    context: PATHS.src,
-    output: {
-      path: PATHS.build,
-      filename: '[name].[hash].js'
-    },
-    resolve: {
-        extensions: ['.ts', '.tsx', '.js']
-    },
-    module: {
-      rules: [
-        {
-          test: /\.tsx?$/,
-          enforce: 'pre',
-          loader: 'tslint-loader'
-        },
-        {
-          test: /\.tsx?$/,
-          loader: 'ts-loader'
-        }
-      ]
-    }
-  }
-  ]);
+  },
+  devtool: 'inline-source-map',
+  plugins: [
+      new HtmlWebpackPlugin({
+        template: './src/public/index.html'
+      })
+  ]
+}
 
-module.exports = (env) => {
-  switch(env) {
-    case 'development':
-      return merge(commonConfig, developmentConfig);
-    case 'production':
-      return merge(commonConfig, productionConfig);
-    default:
-      break;
-  }
-};
+]);
