@@ -24,6 +24,8 @@
     "webpack-dev-server": "^2.9.7",
     "webpack-merge": "^4.1.1"
   },
+  "types": "build/types",
+  "lib": "build/types",
   "scripts": {
     "start": "webpack-dev-server --config config/webpack.config.js --env development",
     "build": "webpack --config config/webpack.config.js --env production",
