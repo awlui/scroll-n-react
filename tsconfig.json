@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es5",
+    "importHelpers": true,
+    "strict": true,
+    "noEmitHelpers": true,
+    "sourceMap": true,
+    "skipLibCheck": true
+  },
+      "include": [
+          "**/*.ts"
+      ],
+      "exclude": [
+        "**/*.spec.ts"
+      ]
+}
