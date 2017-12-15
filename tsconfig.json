@@ -1,19 +1,25 @@
 {
   "compilerOptions": {
     "module": "commonjs",
-    "target": "es5",
+    "target": "es6",
     "importHelpers": true,
     "strict": true,
     "outDir": "build/types",
     "declaration": true,
+    "jsx": "react",
     "noEmitHelpers": true,
     "sourceMap": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "types": ["react-dom", "node"],
+    "baseUrl": "types",
+    "typeRoots": [
+      "types"
+]
   },
       "include": [
-          "**/*.ts"
+          "**/*.ts",
       ],
       "exclude": [
-        "**/*.spec.ts"
+        "**/*.spec.ts",
       ]
 }

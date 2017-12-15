@@ -4,7 +4,6 @@ import * as _ from 'lodash';
 let styles = require('./styles/scss/scroll.scss');
 interface IState {
   paddingTop: number,
-  component: React.ReactElement<any>
 }
 /**
   ScrollRx React Component
