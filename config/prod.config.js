@@ -4,7 +4,8 @@ module.exports = merge([
 {
   plugins: [
     new TypedocWebpackPlugin({}, ['./src'])
-  ]
+  ],
+  devtool: 'none'
 }
 
 ]);

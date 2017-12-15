@@ -16,6 +16,19 @@ const commonConfig = merge([
     output: {
       path: PATHS.build,
       filename: '[name].js'
+    },
+    resolve: {
+        extensions: ['.ts', '.tsx', '.js']
+    },
+    module: {
+      rules: [
+        {
+          test: /\.tsx?$/,
+          include: PATHS.src,
+          enforce: 'pre',
+          loader: 'tslint-loader'
+        }
+      ]
     }
   }
   ]);
