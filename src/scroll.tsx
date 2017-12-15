@@ -1,5 +1,7 @@
 import * as React from 'react';
 import {iScrollProps} from './interfaces/scroll.interface';
+import * as _ from 'lodash';
+let styles = require('./styles/scss/scroll.scss');
 interface IState {}
 /**
   ScrollRx React Component
@@ -17,7 +19,13 @@ export class ScrollRx extends React.Component<iScrollProps, IState> {
     render() {
       let {width, height} = this.props;
       return (
-        <div style={{height, width}}>Scroll</div>
+        <div onScroll={() => console.log('scrolling...')} className={styles.scroll} style={{height, width, overflowY: 'scroll', }}>
+          {
+            _.range(10).map(() => (
+              <div>Hello</div>
+            ))
+          }
+        </div>
       )
     }
 }

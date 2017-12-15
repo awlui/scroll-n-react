@@ -1,6 +1,7 @@
 // const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
 const merge = require('webpack-merge');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const developmentConfig = require('./dev.config');
 const productionConfig = require('./prod.config');
 const PATHS = {
@@ -30,9 +31,28 @@ const commonConfig = merge([
         {
           test: /\.tsx?$/,
           loader: 'ts-loader'
+        },
+        {
+          test: /\.scss/,
+          use: ExtractTextPlugin.extract({
+            fallback: 'style-loader',
+            use: [
+              {
+                loader: 'css-loader',
+                options: {
+                  modules: true
+                }
+              },
+              'sass-loader'
+            ]
+          })
+
         }
       ]
-    }
+    },
+    plugins: [
+      new ExtractTextPlugin({filename: 'styles.css', allChunks: true})
+    ]
   }
   ]);
 
