@@ -21,7 +21,7 @@ describe("Dimensions of Scroll Component determined by props.", () => {
   });
 });
 
-describe("Height and width will be registered in the state of the component", () => {
+describe("Height and width props to State", () => {
 
   const wrapper = shallow(<ScrollRx width={200} height={200} component={null} />, { disableLifecycleMethods: true });
   let inst = wrapper.instance()
@@ -34,7 +34,7 @@ describe("Height and width will be registered in the state of the component", ()
   });
 });
 
-describe("Scroll component should render component passed to it", () => {
+describe("component prop to be rendered by ScrollRx", () => {
   let dummyComponent = () => (<div className=".dummy">yo</div>);
   const badWrapper = mount(<ScrollRx width={200} height={200} component={null}/>);
   describe("Contains the right number of dummy Components passed to it", () => {
@@ -55,7 +55,7 @@ describe("Scroll component should render component passed to it", () => {
 
 
 
-describe("The Scrolling component will be positioned according to anchorTop/anchorBottom.", () => {
+describe("anchorTop and anchorBottom props", () => {
 
   it("Adding both anchorTop and anchorBottom to ScrollRx triggers Error", () => {
     expect(mount.bind(this, <ScrollRx width={75} anchorTop anchorBottom height={75} component={null}/>)).toThrow('Choose only one: anchorBottom or anchorTop');
@@ -88,6 +88,46 @@ describe("The Scrolling component will be positioned according to anchorTop/anch
   });
 });
 
-describe("Scrolling the component will trigger the _onScroll private function", () => {
-  
+describe("Threshold prop", () => {
+  it("The threshold will be equal to the value passed in when the anchorBottom prop is passed in", () => {
+    let wrapper = shallow(<ScrollRx width={75} anchorBottom height={75} threshold={0} component={null}/>, { disableLifecycleMethods: true});
+    let inst = wrapper.instance() as IScrollRx;
+    inst.main = {
+      scrollHeight: 100
+    };
+    inst.componentDidMount();
+    expect(inst.state['threshold']).toEqual(0);
+  });
+  it("The threshold will default to zero", () => {
+    let wrapper = shallow(<ScrollRx width={75} anchorBottom height={75} component={null}/>, { disableLifecycleMethods: true});
+    let inst = wrapper.instance() as IScrollRx;
+    inst.main = {
+      scrollHeight: 100
+    };
+    inst.componentDidMount();
+    expect(inst.state['threshold']).toEqual(0);
+  });
+  it("The threshold will be equal to the value passed in plus, the scrollHeight minus the height, when the anchorTop prop is passed in", () => {
+    let wrapper = shallow(<ScrollRx width={75} anchorTop height={75} threshold={1} component={null}/>, { disableLifecycleMethods: true});
+    let inst = wrapper.instance() as IScrollRx;
+    inst.main = {
+      scrollHeight: 100
+    };
+    inst.componentDidMount();
+    expect(inst.state['threshold']).toEqual(24);
+  });
+})
+
+describe("Scrolling Event", () => {
+  it("Scrolling Event should trigger _onScroll callback", () => {
+    let wrapper = mount(<ScrollRx width={75} anchorTop height={75} component={null}/>);
+    let inst = wrapper.instance() as IScrollRx;
+    let mockCallback = jest.fn();
+    inst._onScroll = mockCallback();
+    wrapper.simulate('scroll');
+    expect(mockCallback.mock.calls.length).toEqual(1);
+  });
+  it("Scrolling to threshold will trigger the _defaultGetMore callback", () => {
+    let wrapper = mount(<ScrollRx width={75} anchorTop height={75} threshold={0} component={null}/>);
+  })
 });

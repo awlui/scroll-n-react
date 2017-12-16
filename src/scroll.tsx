@@ -22,32 +22,38 @@ export class ScrollRx extends React.Component<IScrollProps, IState> {
       super(props);
       this.state = {
         paddingTop: 0,
-        height: this.props.height || 0,
-        width: this.props.width || 0,
-        anchorBottom: this.props.anchorBottom,
-        anchorTop: this.props.anchorTop
-
+        height: props.height || 0,
+        width: props.width || 0,
+        anchorBottom: props.anchorBottom,
+        anchorTop: props.anchorTop
       }
     }
-    componentWillMount() {
-    }
+
     componentDidMount() {
       this.setState({
         paddingTop: (this.props.height > this.main.scrollHeight) ? (this.props.height - this.main.scrollHeight) : 0
       });
-      let {anchorBottom, anchorTop} = this.props;
+      let {anchorBottom, anchorTop, threshold = 0} = this.props;
       if (!!anchorTop && !!anchorBottom) {
         throw new Error('Choose only one: anchorBottom or anchorTop');
       } else if (!!anchorBottom) {
       this.main.scrollTop = this.main.scrollHeight - this.props.height;
-      }
+      this.setState({
+        threshold
+      });
+    } else {
+      this.main.scrollTop = 0;
+      this.setState({
+        threshold: (this.main.scrollHeight - this.props.height) - threshold
+      });
+    }
     }
     componentDidUpdate() {
       let {height, width, shouldReset} = this.props;
       let {anchorBottom, anchorTop} = this.state;
       if (shouldReset === true && anchorBottom) {
           this.main.scrollTop = this.main.scrollHeight - this.state.height;
-      } else {
+      } else if (shouldReset === true && anchorTop){
         this.main.scrollTop = 0;
       }
     }
@@ -58,7 +64,7 @@ export class ScrollRx extends React.Component<IScrollProps, IState> {
       return (
       <div
         ref={(main) => {this.main = main;}}
-        onScroll={() => console.log('scrolling...', this.main.scrollTop, this.main.scrollHeight, this.state.height)}
+        onScroll={this._onScroll}
         className={styles.scroll}
         style={{paddingTop: this.state.paddingTop, maxHeight: height, width, overflowY: 'scroll', }}>
         {Zcomponent ? dataArray.map((data: (string | number), i: number) => (
@@ -72,7 +78,15 @@ export class ScrollRx extends React.Component<IScrollProps, IState> {
     /* Exclusive Library Methods */
 
     private _onScroll = (): void => {
-
+      if (this.state.anchorBottom) {
+        if (this.main.scrollTop <= this.state.threshold) {
+          console.log('hit')
+        }
+      } else {
+        if (this.main.scrollTop >= this.state.threshold) {
+          console.log('hit')
+        }
+      }
     }
     /**
     * @returns This is the default function for the getMore Prop.

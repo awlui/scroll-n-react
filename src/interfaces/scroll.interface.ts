@@ -1,14 +1,16 @@
 import * as React from 'react';
 import {ScrollRx} from '../scroll';
 interface IScrollRx extends React.Component {
-  main: any
+  main: any,
+  _onScroll: Function
 }
 interface IState {
   paddingTop: number,
   height: number,
   width: number,
   anchorBottom?: boolean,
-  anchorTop?: boolean
+  anchorTop?: boolean,
+  threshold?: number
 }
 interface IScrollProps extends React.Props<ScrollRx> {
   /**
