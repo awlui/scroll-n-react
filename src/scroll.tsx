@@ -18,7 +18,7 @@ scrollTop: length of top of scroll window to top of scrollable area;
 export class ScrollRx extends React.Component<IScrollProps, IState> {
     // Holds the component instance
     private main: any;
-
+    private placeholder: HTMLElement;
     /* React Lifecycle Methods */
     constructor(props: IScrollProps) {
       super(props);
@@ -60,6 +60,9 @@ export class ScrollRx extends React.Component<IScrollProps, IState> {
         this.main.scrollTop = 0;
       }
     }
+    componentWillUpdate() {
+      console.log(this.props, 'component updating')
+    }
     render() {
 
       let {width = 0, height = 0, component, dataArray=[], getMore=this._defaultGetMore} = this.props;
@@ -68,7 +71,7 @@ export class ScrollRx extends React.Component<IScrollProps, IState> {
       return (
       <div
         ref={(main) => {this.main = main;}}
-        onScroll={this._onScroll}
+        onScroll={this._onScroll.bind(this, getMore)}
         className={styles.scroll}
         style={{paddingTop: this.state.paddingTop, maxHeight: height, width, overflowY: 'scroll', }}>
         {Zcomponent ? dataArray.map((data: IgetMoreData, i: number) => (
@@ -81,14 +84,14 @@ export class ScrollRx extends React.Component<IScrollProps, IState> {
 
     /* Exclusive Library Methods */
 
-    private _onScroll = (): void => {
+    private _onScroll = (cb: Function): void => {
       if (this.state.anchorBottom) {
         if (this.main.scrollTop <= this.state.threshold) {
-          this._defaultGetMore();
+          cb();
         }
       } else {
         if (this.main.scrollTop >= this.state.threshold) {
-          this._defaultGetMore();
+          cb();
         }
       }
     }
