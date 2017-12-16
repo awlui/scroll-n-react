@@ -1,8 +1,10 @@
 import * as React from 'react';
-import {IScrollProps, IState, IScrollRx} from './interfaces/scroll.interface';
+import {IScrollProps, IState, IScrollRx, IgetMoreData} from './interfaces/scroll.interface';
 import * as _ from 'lodash';
 let styles = require('./styles/scss/scroll.scss');
-
+import {
+  FadingCircle
+} from 'better-react-spinkit';
 
 /**
 Notes
@@ -49,6 +51,7 @@ export class ScrollRx extends React.Component<IScrollProps, IState> {
     }
     }
     componentDidUpdate() {
+      console.log('yodawg', this.props.shouldReset)
       let {height, width, shouldReset} = this.props;
       let {anchorBottom, anchorTop} = this.state;
       if (shouldReset === true && anchorBottom) {
@@ -61,14 +64,15 @@ export class ScrollRx extends React.Component<IScrollProps, IState> {
 
       let {width = 0, height = 0, component, dataArray=[], getMore=this._defaultGetMore} = this.props;
       let Zcomponent = component;
+      let lastIndex = dataArray.length - 1;
       return (
       <div
         ref={(main) => {this.main = main;}}
         onScroll={this._onScroll}
         className={styles.scroll}
         style={{paddingTop: this.state.paddingTop, maxHeight: height, width, overflowY: 'scroll', }}>
-        {Zcomponent ? dataArray.map((data: (string | number), i: number) => (
-          <Zcomponent key={i} data={data}/>
+        {Zcomponent ? dataArray.map((data: IgetMoreData, i: number) => (
+          <Zcomponent key={data.id || i} data={data}/>
         )) : <div>Error Add a component prop</div>
         }
       </div>
@@ -80,11 +84,11 @@ export class ScrollRx extends React.Component<IScrollProps, IState> {
     private _onScroll = (): void => {
       if (this.state.anchorBottom) {
         if (this.main.scrollTop <= this.state.threshold) {
-          console.log('hit')
+          this._defaultGetMore();
         }
       } else {
         if (this.main.scrollTop >= this.state.threshold) {
-          console.log('hit')
+          this._defaultGetMore();
         }
       }
     }

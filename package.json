@@ -8,7 +8,8 @@
     "@types/enzyme": "^3.1.6",
     "@types/enzyme-adapter-react-16": "^1.0.1",
     "@types/jest": "^21.1.8",
-    "@types/react-dom": "^16.0.3"
+    "@types/react-dom": "^16.0.3",
+    "better-react-spinkit": "^2.0.4"
   },
   "devDependencies": {
     "@types/sinon": "^4.1.2",

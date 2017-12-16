@@ -2,7 +2,8 @@ import * as React from 'react';
 import {ScrollRx} from '../scroll';
 interface IScrollRx extends React.Component {
   main: any,
-  _onScroll: Function
+  _onScroll: Function,
+  _defaultGetMore: Function
 }
 interface IState {
   paddingTop: number,
@@ -10,17 +11,19 @@ interface IState {
   width: number,
   anchorBottom?: boolean,
   anchorTop?: boolean,
-  threshold?: number
+  threshold?: number,
+  fetching?: boolean
 }
+
 interface IScrollProps extends React.Props<ScrollRx> {
   /**
   * Width of the entire prop component
   */
-  width: number,
+  width?: number,
   /**
   * Height of the entire prop component
   */
-  height: number,
+  height?: number,
   /**
   * Boolean that determines whether, in conjunction with anchor(Top|Bottom), the scrollbar is
   * scrolled to the top or bottom when the component updates.
@@ -49,9 +52,15 @@ interface IScrollProps extends React.Props<ScrollRx> {
   /**
   * on start up and subsequent resets, pulls the scrollbar down.
   */
-  anchorBottom?: boolean //Comment
+  anchorBottom?: boolean,
+  /**
+  * Fetching prop that enclosing app will be responsible for passing down.
+  */
+  fetching?: boolean
 }
-
+interface IgetMoreData {
+  id: number
+}
 export {
-  IState, IScrollProps, IScrollRx
+  IState, IScrollProps, IScrollRx, IgetMoreData
 }

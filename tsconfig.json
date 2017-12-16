@@ -10,7 +10,8 @@
     "jsx": "react",
     "noEmitHelpers": true,
     "sourceMap": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "noImplicitAny": false
     },
       "include": [
           "**/*.ts"

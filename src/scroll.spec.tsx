@@ -11,13 +11,26 @@ describe("Dimensions of Scroll Component determined by props.", () => {
   let dummyComponent = () => (<div className=".dummy">yo</div>);
   const wrapper = shallow(<ScrollRx width={100} height={100} component={dummyComponent}/>, {disableLifecycleMethods: true});
 
-
   it("Height determined by props.height", () => {
     expect(wrapper.getElement().props.style.maxHeight).toEqual(100);
 
   });
   it("Width determined by props.width", () => {
     expect(wrapper.getElement().props.style.width).toEqual(100);
+  });
+  it("Missing Width/Height prop sets style to 0, respectively", () => {
+    const wrapper = shallow(<ScrollRx component={dummyComponent}/>, {disableLifecycleMethods: true});
+    expect(wrapper.getElement().props.style.maxHeight).toEqual(0);
+    expect(wrapper.getElement().props.style.width).toEqual(0);
+
+
+  })
+});
+
+describe("No Component prop", () => {
+  it("Gives an error message in a div", () => {
+    const wrapper = mount(<ScrollRx width={100} height={100} component={null}/>);
+    expect(wrapper.children().contains(<div>Error Add a component prop</div>)).toEqual(true);
   });
 });
 
@@ -119,15 +132,28 @@ describe("Threshold prop", () => {
 })
 
 describe("Scrolling Event", () => {
-  it("Scrolling Event should trigger _onScroll callback", () => {
-    let wrapper = mount(<ScrollRx width={75} anchorTop height={75} component={null}/>);
+  it("Scrolling to threshold will trigger the _defaultGetMore callback", () => {
+    let dummyComponent = () => (<div className=".dummy">yo</div>);
+    let wrapper = mount(<ScrollRx width={75} anchorBottom height={75} threshold={0} component={dummyComponent}/>);
     let inst = wrapper.instance() as IScrollRx;
     let mockCallback = jest.fn();
-    inst._onScroll = mockCallback();
+    inst._defaultGetMore = mockCallback;
+
+    inst.main.scrollTop = 0;
+
+    expect(mockCallback.mock.calls.length).toEqual(0);
     wrapper.simulate('scroll');
     expect(mockCallback.mock.calls.length).toEqual(1);
   });
-  it("Scrolling to threshold will trigger the _defaultGetMore callback", () => {
-    let wrapper = mount(<ScrollRx width={75} anchorTop height={75} threshold={0} component={null}/>);
-  })
+  it("Scrolling to threshold will set fetching to true", () => {
+    let dummyComponent = () => (<div className=".dummy">yo</div>);
+    let wrapper = mount(<ScrollRx width={75} anchorBottom height={75} threshold={0} component={dummyComponent}/>);
+    let inst = wrapper.instance() as IScrollRx;
+
+    inst.main.scrollTop = 0;
+
+    expect(inst.state['fetching']).toEqual(false || undefined);
+    wrapper.simulate('scroll');
+    expect(inst.state['fetching']).toEqual(true);
+  });
 });
