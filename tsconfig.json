@@ -5,21 +5,17 @@
     "importHelpers": true,
     "strict": true,
     "outDir": "build/types",
+    "strictNullChecks": false,
     "declaration": true,
     "jsx": "react",
     "noEmitHelpers": true,
     "sourceMap": true,
-    "skipLibCheck": true,
-    "types": ["react-dom", "node"],
-    "baseUrl": "types",
-    "typeRoots": [
-      "types"
-]
-  },
+    "skipLibCheck": true
+    },
       "include": [
-          "**/*.ts",
+          "**/*.ts"
       ],
       "exclude": [
-        "**/*.spec.ts",
+        "**/*.spec.tsx$"
       ]
 }

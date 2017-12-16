@@ -7,6 +7,12 @@ export interface IState {
   height: number,
   width: number
 }
+
+/**
+scrollHeight: length of entire scrollable area;
+scrollTop: length of top of scroll window to top of scrollable area;
+*/
+
 /**
   ScrollRx React Component
 */
@@ -25,40 +31,36 @@ export class ScrollRx extends React.Component<iScrollProps, IState> {
       }
     }
     componentWillMount() {
-      console.log('mounting')
     }
     componentDidMount() {
-      // console.log(this.props.height, this.main.scrollHeight)
-      // this.setState({
-      //   paddingTop: (this.props.height > this.main.scrollHeight) ? (this.props.height - this.main.scrollHeight) : 0
-      // });
-      // this.main.scrollTop = this.main.scrollHeight - this.props.height;
+      this.setState({
+        paddingTop: (this.props.height > this.main.scrollHeight) ? (this.props.height - this.main.scrollHeight) : 0
+      });
+      this.main.scrollTop = this.main.scrollHeight - this.props.height;
     }
     componentDidUpdate() {
       let {height, width, shouldReset} = this.props;
-      if (shouldReset) {
+      if (shouldReset !== false) {
         this.main.scrollTop = this.main.scrollHeight - this.state.height;
       }
     }
     render() {
-      let {width = 0, height = 0, component} = this.props;
+      let {width = 0, height = 0, component, dataArray=[]} = this.props;
+      let Zcomponent = component;
       return (
       <div
         ref={(main) => {this.main = main;}}
-        onScroll={() => console.log('scrolling...', this.main.scrollHeight - height)}
+        onScroll={() => console.log('scrolling...', this.main.scrollTop, this.main.scrollHeight, this.state.height)}
         className={styles.scroll}
         style={{paddingTop: this.state.paddingTop, maxHeight: height, width, overflowY: 'scroll', }}>
-        {component}
+        {Zcomponent ? dataArray.map((data: (string | number), i: number) => (
+          <Zcomponent key={i} data={data}/>
+        )) : <div>Error Add a component prop</div>
+        }
       </div>
       )
     }
+    private _onScroll = () => {
+
+    }
 }
-// ref={(main) => {this.main = main;}}
-// onScroll={() => console.log('scrolling...', this.main.scrollHeight - height)}
-// className={styles.scroll}
-// style={{paddingTop: this.state.paddingTop, maxHeight: height, width, overflowY: 'scroll', }}>
-// {
-//   _.range(20).map((i) => (
-//     <div key={i}>Hello</div>
-//   ))
-// }

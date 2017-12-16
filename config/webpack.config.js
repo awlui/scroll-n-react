@@ -60,6 +60,6 @@ module.exports = (env) => {
     case 'development':
       return merge(developmentConfig, commonConfig);
     case  'production':
-      return merge(production, commonConfig);
+      return merge(productionConfig, commonConfig);
   }
 }
