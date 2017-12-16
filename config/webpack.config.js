@@ -1,5 +1,5 @@
 const merge = require('webpack-merge');
-
+const path = require('path');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const developmentConfig = require('./dev.config');
 const productionConfig = require('./prod.config');
@@ -57,9 +57,9 @@ const commonConfig = merge([
 
 module.exports = (env) => {
   switch(env) {
-    case: 'development':
+    case 'development':
       return merge(developmentConfig, commonConfig);
-    case: 'production':
+    case  'production':
       return merge(production, commonConfig);
   }
 }
