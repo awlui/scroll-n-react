@@ -68,6 +68,7 @@
     "collectCoverageFrom": [
       "**/*.{ts,tsx}",
       "!src/interfaces/**",
+      "!build/**/*",
       "!**/node_modules/**",
       "!**/vendor/**",
       "!**/jest/**"
