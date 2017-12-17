@@ -14,7 +14,6 @@ module.exports = merge([
   externals: {
     'react': 'react',
     'react-dom': 'react-dom',
-    'lodash': 'lodash'
   }
 }
 

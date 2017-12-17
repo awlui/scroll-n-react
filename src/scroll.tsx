@@ -1,11 +1,6 @@
 import * as React from 'react';
 import {IScrollProps, IState, IScrollRx, IgetMoreData} from './interfaces/scroll.interface';
-import * as _ from 'lodash';
-let styles = require('./styles/scss/scroll.scss');
-import {
-  FadingCircle,
-  Wave
-} from 'better-react-spinkit';
+
 
 /**
 Notes
@@ -36,17 +31,11 @@ export class ScrollRx extends React.Component<IScrollProps, IState> {
       let {anchorTop, anchorBottom} = props;
       if (!!anchorTop && !!anchorBottom) {
         throw new Error('Choose only one: anchorBottom or anchorTop');
-      }
-      if (!anchorTop && !anchorBottom) {
-        anchorTop = true;
+      } else if (!this.props.width || !this.props.height){
+        throw new Error('Must include height and width');
       }
       this.state = {
         paddingTop: 0,
-        height: props.height || 0,
-        width: props.width || 0,
-        anchorBottom: anchorBottom,
-        anchorTop: anchorTop,
-        Loader: props.loader || ((props) => (<div {...props}>Loading...</div>))
       }
     }
 
@@ -54,7 +43,7 @@ export class ScrollRx extends React.Component<IScrollProps, IState> {
       this.setState({
         paddingTop: (this.props.height > this.main.scrollHeight) ? (this.props.height - this.main.scrollHeight) : 0
       });
-      let {anchorBottom, anchorTop, threshold = 0} = this.props;
+      let {anchorBottom, anchorTop=(anchorBottom ? false : true), threshold = 0} = this.props;
       if (!!anchorBottom) {
       this.main.scrollTop = this.main.scrollHeight - this.props.height;
       this.setState({
@@ -69,12 +58,14 @@ export class ScrollRx extends React.Component<IScrollProps, IState> {
     }
     componentDidUpdate() {
       let {height, width, shouldReset, fetching} = this.props;
-      let {anchorBottom, anchorTop} = this.state;
+      let {anchorBottom, anchorTop=(anchorBottom ? false : true)} = this.props;
       if (shouldReset === true && anchorBottom) {
-          this.main.scrollTop = this.main.scrollHeight - this.state.height;
-      } else if (shouldReset === true && anchorTop){
+          this.main.scrollTop = this.main.scrollHeight - height;
+      } else if (shouldReset && anchorTop){
         this.main.scrollTop = 0;
-      } else if (this.placeholder && !fetching) {
+      } else if (shouldReset && anchorBottom) {
+        this.main.scrollTop = this.main.scrollHeight - this.props.height;
+      } else if (this.placeholder && !fetching && anchorBottom) {
         if (this.main.scrollTop < (this.placeholder.offsetTop - this.main.offsetTop)) {
           this.main.scrollTop = (this.placeholder.offsetTop - this.main.offsetTop)
         }
@@ -87,19 +78,35 @@ export class ScrollRx extends React.Component<IScrollProps, IState> {
       }
     }
     render() {
-      let {width = 0, height = 0, component, dataArray=[], getMore=this._defaultGetMore, fetching} = this.props;
-      let {anchorTop, anchorBottom, Loader} = this.state;
+      let {width = 0,
+        height = 0,
+        component,
+        dataArray=[],
+        getMore=this._defaultGetMore,
+        fetching,
+        loader=((props) => (<div {...props}>Loading...</div>)),
+        className,
+        anchorBottom,
+        anchorTop=(anchorBottom ? false : true)
+        } = this.props;
       let Zcomponent = component;
+      let Loader = loader
       let lastIndex = dataArray.length - 1;
 
       return (
       <div
         ref={(main) => {this.main = main;}}
         onScroll={this._onScroll.bind(this, getMore)}
-        className={styles.scroll}
-        style={{paddingTop: this.state.paddingTop, maxHeight: height, width, overflowY: 'scroll', }}>
+        className={className}
+        style={{paddingTop: this.state.paddingTop,
+                maxHeight: height, width,
+                overflowY: 'scroll',
+                padding: 0,
+                margin: 0,
+                backgroundColor: 'rgba(245,245,220,1)'
+              }}>
         {
-          fetching && anchorBottom ? <Loader className="loader"/> : null
+          fetching && anchorBottom ? <Loader className='loader'/> : null
         }
         {
           Zcomponent ? dataArray.map((data: IgetMoreData, i: number) => {
@@ -110,7 +117,7 @@ export class ScrollRx extends React.Component<IScrollProps, IState> {
         : <div>Error Add a component prop</div>
         }
         {
-          fetching && anchorTop ? <Loader className="loader"/> : null
+          fetching && anchorTop ? <Loader className='loader'/> : null
         }
       </div>
       )
@@ -119,13 +126,13 @@ export class ScrollRx extends React.Component<IScrollProps, IState> {
     /* Exclusive Library Methods */
 
     _onScroll = (cb: Function) => {
-      let {fetching} = this.props;
-      if (this.state.anchorBottom) {
-        if ((this.main.scrollTop <= this.state.threshold) && !fetching) {
+      let {fetching=false, threshold=0, anchorBottom} = this.props;
+      if (anchorBottom) {
+        if ((this.main.scrollTop <= threshold) && !fetching) {
           cb();
         }
       } else {
-        if ((this.main.scrollTop >= this.state.threshold) && !fetching) {
+        if ((this.main.scrollTop >= threshold) && !fetching) {
           cb();
         }
       }

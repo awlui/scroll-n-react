@@ -26,10 +26,8 @@ describe("Dimensions of Scroll Component determined by props.", () => {
   it("Width determined by props.width", () => {
     expect(wrapper.getElement().props.style.width).toEqual(100);
   });
-  it("Missing Width/Height prop sets style to 0, respectively", () => {
-    const wrapper = shallow(<ScrollRx component={dummyComponent}/>, {disableLifecycleMethods: true});
-    expect(wrapper.getElement().props.style.maxHeight).toEqual(0);
-    expect(wrapper.getElement().props.style.width).toEqual(0);
+  it("Missing Width/Height throws error, respectively", () => {
+    expect(mount.bind(this, (<ScrollRx height={null} width={null} component={dummyComponent}/>))).toThrowError('Must include height and width');
 
 
   })
@@ -42,18 +40,7 @@ describe("No Component prop", () => {
   });
 });
 
-describe("Height and width props to State", () => {
 
-  const wrapper = shallow(<ScrollRx width={200} height={200} component={null} />, { disableLifecycleMethods: true });
-  let inst = wrapper.instance()
-  it("Height is in the component state", () => {
-
-    expect(wrapper.instance().state.height).toEqual(200);
-  });
-  it("Width is in the component state", () => {
-    expect(wrapper.instance().state.width).toEqual(200);
-  });
-});
 
 describe("component prop to be rendered by ScrollRx", () => {
   let dummyComponent = () => (<div className=".dummy">yo</div>);
@@ -81,11 +68,10 @@ describe("anchorTop and anchorBottom props", () => {
   it("Adding both anchorTop and anchorBottom to ScrollRx triggers Error", () => {
     expect(mount.bind(this, <ScrollRx width={75} anchorTop anchorBottom height={75} component={null}/>)).toThrow('Choose only one: anchorBottom or anchorTop');
   });
-  it("anchorTop is default", () => {
-    let wrapper = shallow(<ScrollRx width={75} height={75} component={null}/>, { disableLifecycleMethods: true});
-    let inst = wrapper.instance() as IScrollRx;
-    expect(inst.state['anchorTop']).toEqual(true);
-    expect(inst.state['anchorBottom']).toEqual(undefined)
+  it("anchorTop is default, which means the loader appears after content", () => {
+    let dummyComponent = () => (<div className=".dummy">yo</div>);
+    let wrapper = mount(<ScrollRx width={75} fetching={true} height={75} dataArray={generateDataArray(1)} component={dummyComponent}/>);
+    expect(wrapper.children().childAt(1).html()).toEqual('<div class="loader">Loading...</div>')
 
   });
   it("Adding anchor bottom positions ScrollRx scrollbar to the bottom on mounting", () => {

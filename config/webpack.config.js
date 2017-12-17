@@ -31,27 +31,27 @@ const commonConfig = merge([
           test: /\.tsx?$/,
           loader: 'ts-loader'
         },
-        {
-          test: /\.scss/,
-          use: ExtractTextPlugin.extract({
-            fallback: 'style-loader',
-            use: [
-              {
-                loader: 'css-loader',
-                options: {
-                  modules: true
-                }
-              },
-              'sass-loader'
-            ]
-          })
+        // {
+        //   test: /\.scss/,
+        //   use: ExtractTextPlugin.extract({
+        //     fallback: 'style-loader',
+        //     use: [
+        //       {
+        //         loader: 'css-loader',
+        //         options: {
+        //           modules: true
+        //         }
+        //       },
+        //       'sass-loader'
+        //     ]
+        //   })
 
-        }
+        // }
       ]
     },
-    plugins: [
-      new ExtractTextPlugin({filename: 'styles.css', allChunks: true})
-    ]
+    // plugins: [
+    //   new ExtractTextPlugin({filename: 'styles.css', allChunks: true})
+    // ]
   }
   ]);
 

@@ -2,9 +2,7 @@ import {ScrollRx} from './scroll';
 import * as ReactDOM from 'react-dom';
 import * as React from 'react';
 import * as _ from 'lodash';
-import {
-  Wave
-} from 'better-react-spinkit'
+
 const K = ({data}: any) => (<div>{data.val}</div>)
 function generateDataArray(amt) {
   return _.range(amt).map((num) => {
@@ -29,10 +27,11 @@ class TestRig extends React.Component<any, any> {
   render() {
     return(
       <div>
-      <ScrollRx height={250} threshold={0} width={200} loader={Wave} anchorTop component={K} fetching={this.state.fetching} dataArray={this.state.dataArray}/>
-      <button onClick={() => {console.log(count, 'count', this.state);
+      <ScrollRx height={250} threshold={0} width={200} anchorBottom component={K} shouldReset={this.state.shouldReset} fetching={this.state.fetching} dataArray={this.state.dataArray}/>
+      <button onClick={() => {
+
       this.setState({
-        fetching: true
+        fetching: true,
       })
       setTimeout(() => {
         this.setState({
@@ -40,6 +39,12 @@ class TestRig extends React.Component<any, any> {
           fetching: false
         })
       }, 2000)}}>Click</button>
+      <button onClick={() => {
+
+      this.setState({
+        shouldReset: true,
+      })
+      }}>Click2</button>
       </div>
     )
   }

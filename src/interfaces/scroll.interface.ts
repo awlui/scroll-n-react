@@ -7,25 +7,18 @@ interface IScrollRx extends React.Component {
 }
 interface IState {
   paddingTop: number,
-  height: number,
-  width: number,
-  anchorBottom?: boolean,
-  anchorTop?: boolean,
-  threshold?: number,
-  fetching?: boolean,
-  mounting?: boolean,
-  Loader?: React.StatelessComponent<any>
+  threshold?: number
 }
 
 interface IScrollProps extends React.Props<ScrollRx> {
   /**
   * Width of the entire prop component
   */
-  width?: number,
+  width: number,
   /**
   * Height of the entire prop component
   */
-  height?: number,
+  height: number,
   /**
   * Boolean that determines whether, in conjunction with anchor(Top|Bottom), the scrollbar is
   * scrolled to the top or bottom when the component updates.
@@ -62,7 +55,11 @@ interface IScrollProps extends React.Props<ScrollRx> {
   /**
   * Loader for fetching data
   */
-  loader?: React.StatelessComponent<any>
+  loader?: React.StatelessComponent<any>,
+  /**
+  * Class name for the top level scroll component
+  */
+  className?: string
 }
 interface IgetMoreData {
   id: number
