@@ -3,8 +3,16 @@ import {shallow, mount} from 'enzyme';
 import * as React from 'react';
 import * as renderer from 'react-test-renderer';
 import {IScrollRx} from './interfaces/scroll.interface';
+import * as _ from 'lodash';
 
-
+function generateDataArray(amt) {
+  return _.range(amt).map((num) => {
+    return {
+      id: num,
+      val: num
+    }
+  });
+}
 // The idea behind this component is that the first round of props will be set
 // in the backing instance of the Scroll Component.
 describe("Dimensions of Scroll Component determined by props.", () => {
@@ -52,11 +60,11 @@ describe("component prop to be rendered by ScrollRx", () => {
   const badWrapper = mount(<ScrollRx width={200} height={200} component={null}/>);
   describe("Contains the right number of dummy Components passed to it", () => {
     it("Contains 1 dummy component if passed into it", () => {
-      const wrapper = mount(<ScrollRx width={200} height={200} component={dummyComponent} dataArray={['example1']}/>);
+      const wrapper = mount(<ScrollRx width={200} height={200} component={dummyComponent} dataArray={generateDataArray(1)}/>);
       expect(wrapper.find(dummyComponent)).toHaveLength(1);
     });
     it("Contains 2 dummy components if passed into it", () => {
-      const wrapper = mount(<ScrollRx width={200} height={200} component={dummyComponent} dataArray={['example1', 'example2']}/>);
+      const wrapper = mount(<ScrollRx width={200} height={200} component={dummyComponent} dataArray={generateDataArray(2)}/>);
       expect(wrapper.find(dummyComponent)).toHaveLength(2);
     })
   })
@@ -72,6 +80,13 @@ describe("anchorTop and anchorBottom props", () => {
 
   it("Adding both anchorTop and anchorBottom to ScrollRx triggers Error", () => {
     expect(mount.bind(this, <ScrollRx width={75} anchorTop anchorBottom height={75} component={null}/>)).toThrow('Choose only one: anchorBottom or anchorTop');
+  });
+  it("anchorTop is default", () => {
+    let wrapper = shallow(<ScrollRx width={75} height={75} component={null}/>, { disableLifecycleMethods: true});
+    let inst = wrapper.instance() as IScrollRx;
+    expect(inst.state['anchorTop']).toEqual(true);
+    expect(inst.state['anchorBottom']).toEqual(undefined)
+
   });
   it("Adding anchor bottom positions ScrollRx scrollbar to the bottom on mounting", () => {
     let wrapper = shallow(<ScrollRx width={75} anchorBottom height={75} component={null}/>, { disableLifecycleMethods: true});
@@ -132,28 +147,34 @@ describe("Threshold prop", () => {
 })
 
 describe("Scrolling Event", () => {
-  it("Scrolling to threshold will trigger the _defaultGetMore callback", () => {
+  it("Scrolling to threshold will trigger the getMore callback", () => {
     let dummyComponent = () => (<div className=".dummy">yo</div>);
-    let wrapper = mount(<ScrollRx width={75} anchorBottom height={75} threshold={0} component={dummyComponent}/>);
-    let inst = wrapper.instance() as IScrollRx;
     let mockCallback = jest.fn();
-    inst._defaultGetMore = mockCallback;
-
-    inst.main.scrollTop = 0;
-
+    let wrapper = mount(<ScrollRx width={75} getMore={mockCallback} anchorBottom height={75} threshold={0} component={dummyComponent}/>);
     expect(mockCallback.mock.calls.length).toEqual(0);
     wrapper.simulate('scroll');
     expect(mockCallback.mock.calls.length).toEqual(1);
   });
-  it("Scrolling to threshold will set fetching to true", () => {
-    let dummyComponent = () => (<div className=".dummy">yo</div>);
-    let wrapper = mount(<ScrollRx width={75} anchorBottom height={75} threshold={0} component={dummyComponent}/>);
-    let inst = wrapper.instance() as IScrollRx;
 
-    inst.main.scrollTop = 0;
 
-    expect(inst.state['fetching']).toEqual(false || undefined);
-    wrapper.simulate('scroll');
-    expect(inst.state['fetching']).toEqual(true);
-  });
 });
+
+describe("Placeholder registration", () => {
+  let dummyComponent, wrapper;
+  beforeEach(() => {
+    dummyComponent = ({data}) => (<div className=".dummy">{data.val}</div>);
+    wrapper = mount(<ScrollRx width={75} anchorBottom height={75} threshold={0} dataArray={generateDataArray(5)} component={dummyComponent}/>);
+    wrapper.setProps({
+      dataArray: [{id: 5, val: 5}, ...generateDataArray(5)]
+    });
+  })
+  it("On anchorBottom, the Component will hold on to the previous first Element before a prop update", () => {
+    // console.log(wrapper.childAt(0).childAt(2).html())
+    expect(wrapper.find('.placeholder').html()).toEqual(wrapper.childAt(0).childAt(1).html());
+  });
+  it("The placeholder ref will be filled with the correct HTMLElement after a prop update", () => {
+    // expect(wrapper.instance().placeholder).toEqual(wrapper.find('.placeholder'))
+    expect(wrapper.instance().placeholder.children[0].outerHTML).toEqual(wrapper.childAt(0).childAt(1).childAt(0).html());
+  });
+
+})

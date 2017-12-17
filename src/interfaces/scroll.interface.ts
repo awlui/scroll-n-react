@@ -12,7 +12,8 @@ interface IState {
   anchorBottom?: boolean,
   anchorTop?: boolean,
   threshold?: number,
-  fetching?: boolean
+  fetching?: boolean,
+  mounting?: boolean
 }
 
 interface IScrollProps extends React.Props<ScrollRx> {
