@@ -13,7 +13,8 @@ interface IState {
   anchorTop?: boolean,
   threshold?: number,
   fetching?: boolean,
-  mounting?: boolean
+  mounting?: boolean,
+  Loader?: React.StatelessComponent<any>
 }
 
 interface IScrollProps extends React.Props<ScrollRx> {
@@ -57,7 +58,11 @@ interface IScrollProps extends React.Props<ScrollRx> {
   /**
   * Fetching prop that enclosing app will be responsible for passing down.
   */
-  fetching?: boolean
+  fetching?: boolean,
+  /**
+  * Loader for fetching data
+  */
+  loader?: React.StatelessComponent<any>
 }
 interface IgetMoreData {
   id: number

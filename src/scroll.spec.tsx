@@ -177,4 +177,41 @@ describe("Placeholder registration", () => {
     expect(wrapper.instance().placeholder.children[0].outerHTML).toEqual(wrapper.childAt(0).childAt(1).childAt(0).html());
   });
 
+});
+
+describe("Loader component", () => {
+  it("Will display only when fetching true prop passed in", () => {
+    let dummyComponent = ({data}) => (<div className=".dummy">{data.val}</div>);
+    let wrapper = mount(<ScrollRx width={75}
+       anchorBottom
+       height={75}
+       loader={(props) => (<div {...props}>LOAD</div>)}
+       threshold={0} dataArray={generateDataArray(5)}
+       component={dummyComponent}/>);
+       expect(wrapper.find('.loader').children()).toHaveLength(0);
+  })
+  it("Will use what you pass into the loader prop", () => {
+    let dummyComponent = ({data}) => (<div className=".dummy">{data.val}</div>);
+    let wrapper = mount(<ScrollRx width={75}
+       anchorBottom
+       height={75}
+       loader={(props) => (<div {...props}>LOAD</div>)}
+       fetching={true}
+       threshold={0} dataArray={generateDataArray(5)}
+       component={dummyComponent}/>);
+       expect(wrapper.find('.loader').children()).toHaveLength(1);
+       expect(wrapper.find('.loader').children().html()).toEqual('<div class="loader">LOAD</div>');
+  });
+  it("Will use the default loader if no loader is specified", () => {
+    let dummyComponent = ({data}) => (<div className=".dummy">{data.val}</div>);
+    let wrapper = mount(<ScrollRx width={75}
+       anchorBottom
+       height={75}
+       fetching={true}
+       threshold={0} dataArray={generateDataArray(5)}
+       component={dummyComponent}/>);
+       expect(wrapper.find('.loader').children()).toHaveLength(1);
+       expect(wrapper.find('.loader').children().html()).toEqual('<div class="loader">Loading...</div>');
+
+  })
 })

@@ -72,7 +72,8 @@
       "!build/**/*",
       "!**/node_modules/**",
       "!**/vendor/**",
-      "!**/jest/**"
+      "!**/jest/**",
+      "!**/src/index.tsx"
     ],
     "moduleFileExtensions": [
       "ts",

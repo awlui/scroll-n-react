@@ -45,7 +45,8 @@ export class ScrollRx extends React.Component<IScrollProps, IState> {
         height: props.height || 0,
         width: props.width || 0,
         anchorBottom: anchorBottom,
-        anchorTop: anchorTop
+        anchorTop: anchorTop,
+        Loader: props.loader || ((props) => (<div {...props}>Loading...</div>))
       }
     }
 
@@ -87,6 +88,7 @@ export class ScrollRx extends React.Component<IScrollProps, IState> {
     }
     render() {
       let {width = 0, height = 0, component, dataArray=[], getMore=this._defaultGetMore, fetching} = this.props;
+      let {anchorTop, anchorBottom, Loader} = this.state;
       let Zcomponent = component;
       let lastIndex = dataArray.length - 1;
 
@@ -97,7 +99,7 @@ export class ScrollRx extends React.Component<IScrollProps, IState> {
         className={styles.scroll}
         style={{paddingTop: this.state.paddingTop, maxHeight: height, width, overflowY: 'scroll', }}>
         {
-          fetching ? <Wave /> : null
+          fetching && anchorBottom ? <Loader className="loader"/> : null
         }
         {
           Zcomponent ? dataArray.map((data: IgetMoreData, i: number) => {
@@ -107,6 +109,9 @@ export class ScrollRx extends React.Component<IScrollProps, IState> {
         })
         : <div>Error Add a component prop</div>
         }
+        {
+          fetching && anchorTop ? <Loader className="loader"/> : null
+        }
       </div>
       )
     }
@@ -114,13 +119,13 @@ export class ScrollRx extends React.Component<IScrollProps, IState> {
     /* Exclusive Library Methods */
 
     _onScroll = (cb: Function) => {
-
+      let {fetching} = this.props;
       if (this.state.anchorBottom) {
-        if (this.main.scrollTop <= this.state.threshold) {
+        if ((this.main.scrollTop <= this.state.threshold) && !fetching) {
           cb();
         }
       } else {
-        if (this.main.scrollTop >= this.state.threshold) {
+        if ((this.main.scrollTop >= this.state.threshold) && !fetching) {
           cb();
         }
       }

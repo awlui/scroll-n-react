@@ -29,14 +29,14 @@ class TestRig extends React.Component<any, any> {
   render() {
     return(
       <div>
-      <ScrollRx height={250} threshold={0} width={200} anchorBottom component={K} fetching={this.state.fetching} dataArray={this.state.dataArray}/>
+      <ScrollRx height={250} threshold={0} width={200} loader={Wave} anchorTop component={K} fetching={this.state.fetching} dataArray={this.state.dataArray}/>
       <button onClick={() => {console.log(count, 'count', this.state);
       this.setState({
         fetching: true
       })
       setTimeout(() => {
         this.setState({
-          dataArray: [{id: count, val: count++}, ...this.state.dataArray],
+          dataArray: [...this.state.dataArray, {id: count, val: count++}],
           fetching: false
         })
       }, 2000)}}>Click</button>
