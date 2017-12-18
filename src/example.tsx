@@ -54,7 +54,7 @@ class TestRig extends React.Component<any, any> {
 }
 
 ReactDOM.render(<TestRig />, document.getElementById('root'));
-
+console.log('yo')
 
 // export {
 //   ScrollRx

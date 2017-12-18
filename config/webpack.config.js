@@ -3,21 +3,13 @@ const path = require('path');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const developmentConfig = require('./dev.config');
 const productionConfig = require('./prod.config');
+const demoConfig = require('./demo.config');
 const PATHS = {
   src: path.join(process.cwd(), 'src'),
   build: path.join(process.cwd(), 'build'),
 };
 const commonConfig = merge([
   {
-    entry: {
-      index: './src/index'
-    },
-    // context: process.cwd(),
-    output: {
-      path: PATHS.build,
-      filename: '[name].js',
-      libraryTarget: 'umd'
-    },
     resolve: {
         extensions: ['.ts', '.tsx', '.js']
     },
@@ -62,5 +54,7 @@ module.exports = (env) => {
       return merge(developmentConfig, commonConfig);
     case  'production':
       return merge(productionConfig, commonConfig);
+    case 'demo':
+      return merge(demoConfig, commonConfig);
   }
 }
