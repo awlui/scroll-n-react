@@ -1,7 +1,0 @@
-{
-"version": 3,
-"mappings": "AACE,MAAI;EACF,gBAAgB,EAAE,GAAG",
-"sources": ["../scss/scroll.scss"],
-"names": [],
-"file": "scroll.css"
-}
