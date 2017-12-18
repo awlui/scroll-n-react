@@ -3,7 +3,8 @@ import {ScrollRx} from '../scroll';
 interface IScrollRx extends React.Component {
   main: any,
   _onScroll: Function,
-  _defaultGetMore: Function
+  _defaultGetMore: Function,
+  reset: Function
 }
 interface IState {
   paddingTop: number,
@@ -19,11 +20,6 @@ interface IScrollProps extends React.Props<ScrollRx> {
   * Height of the entire prop component
   */
   height: number,
-  /**
-  * Boolean that determines whether, in conjunction with anchor(Top|Bottom), the scrollbar is
-  * scrolled to the top or bottom when the component updates.
-  */
-  shouldReset?: boolean,
   /**
   * The component that is to be mapped to a data set and fill the scroll component.
   */

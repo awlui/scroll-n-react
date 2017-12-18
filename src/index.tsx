@@ -2,7 +2,6 @@ import {ScrollRx} from './scroll';
 import * as ReactDOM from 'react-dom';
 import * as React from 'react';
 import * as _ from 'lodash';
-
 const K = ({data}: any) => (<div>{data.val}</div>)
 function generateDataArray(amt) {
   return _.range(amt).map((num) => {
@@ -24,26 +23,29 @@ class TestRig extends React.Component<any, any> {
   componentDidUpdate() {
     console.log('update')
   }
+  Foo = () => {
+    if (this.state.fetching) {
+      return;
+    }
+  this.setState({
+    fetching: true,
+    shouldReset: false
+  })
+  setTimeout(() => {
+    this.setState({
+      dataArray: [{id: count, val: count++}, ...this.state.dataArray],
+      fetching: false,
+      shouldReset: false
+    })
+  }, 1000)
+  }
   render() {
     return(
       <div>
-      <ScrollRx height={250} threshold={0} width={200} anchorBottom component={K} shouldReset={this.state.shouldReset} fetching={this.state.fetching} dataArray={this.state.dataArray}/>
-      <button onClick={() => {
+      <ScrollRx height={250} threshold={10} width={200} getMore={this.Foo} anchorBottom component={K} fetching={this.state.fetching} dataArray={this.state.dataArray}/>
 
-      this.setState({
-        fetching: true,
-      })
-      setTimeout(() => {
-        this.setState({
-          dataArray: [...this.state.dataArray, {id: count, val: count++}],
-          fetching: false
-        })
-      }, 2000)}}>Click</button>
       <button onClick={() => {
-
-      this.setState({
-        shouldReset: true,
-      })
+        
       }}>Click2</button>
       </div>
     )

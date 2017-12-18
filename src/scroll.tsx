@@ -56,16 +56,18 @@ export class ScrollRx extends React.Component<IScrollProps, IState> {
       });
     }
     }
-    componentDidUpdate() {
-      let {height, width, shouldReset, fetching} = this.props;
-      let {anchorBottom, anchorTop=(anchorBottom ? false : true)} = this.props;
-      if (shouldReset === true && anchorBottom) {
-          this.main.scrollTop = this.main.scrollHeight - height;
-      } else if (shouldReset && anchorTop){
+    reset() {
+      let {anchorBottom, anchorTop, height} = this.props;
+      if (anchorBottom) {
+        this.main.scrollTop = this.main.scrollHeight - height;
+      } else {
         this.main.scrollTop = 0;
-      } else if (shouldReset && anchorBottom) {
-        this.main.scrollTop = this.main.scrollHeight - this.props.height;
-      } else if (this.placeholder && !fetching && anchorBottom) {
+      }
+    }
+    componentDidUpdate() {
+      let {height, width, fetching} = this.props;
+      let {anchorBottom, anchorTop=(anchorBottom ? false : true)} = this.props;
+      if (this.placeholder && !fetching && anchorBottom) {
         if (this.main.scrollTop < (this.placeholder.offsetTop - this.main.offsetTop)) {
           this.main.scrollTop = (this.placeholder.offsetTop - this.main.offsetTop)
         }

@@ -88,16 +88,13 @@ describe("anchorTop and anchorBottom props", () => {
     let inst = wrapper.instance() as IScrollRx;
     expect(inst.main.scrollTop).toEqual(0);
   });
-  it("Prop shouldReset should trigger anchorTop or anchorBottom action", () => {
+  it("The reset method should position the scrollbar either up or down for anchorTop/anchorBottom, respectively", () => {
     let wrapper = mount(<ScrollRx width={75} anchorTop height={75} component={null}/>);
     let inst = wrapper.instance() as IScrollRx;
     expect(inst.main.scrollTop).toEqual(0);
     inst.main.scrollTop = 10;
     expect(inst.main.scrollTop).toEqual(10);
-    wrapper.setProps({
-      shouldReset: true,
-      anchorTop: true
-    });
+    inst.reset();
     expect(inst.main.scrollTop).toEqual(0);
   });
 });
