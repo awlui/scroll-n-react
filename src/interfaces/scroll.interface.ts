@@ -55,7 +55,8 @@ interface IScrollProps extends React.Props<ScrollRx> {
   /**
   * Class name for the top level scroll component
   */
-  className?: string
+  className?: string,
+  onRef?: Function
 }
 interface IgetMoreData {
   id: number

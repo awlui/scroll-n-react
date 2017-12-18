@@ -40,6 +40,10 @@ export class ScrollRx extends React.Component<IScrollProps, IState> {
     }
 
     componentDidMount() {
+      let {onRef} = this.props;
+      if (onRef) {
+        onRef(this);
+      }
       this.setState({
         paddingTop: (this.props.height > this.main.scrollHeight) ? (this.props.height - this.main.scrollHeight) : 0
       });
@@ -55,6 +59,13 @@ export class ScrollRx extends React.Component<IScrollProps, IState> {
         threshold: (this.main.scrollHeight - this.props.height) - threshold
       });
     }
+    }
+    componentWillUnmount() {
+      let {onRef} = this.props;
+      if (onRef) {
+        onRef(undefined);
+      }
+      this.props.onRef(undefined);
     }
     reset() {
       let {anchorBottom, anchorTop, height} = this.props;

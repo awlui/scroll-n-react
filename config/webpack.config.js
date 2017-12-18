@@ -15,7 +15,8 @@ const commonConfig = merge([
     // context: process.cwd(),
     output: {
       path: PATHS.build,
-      filename: '[name].[hash].js'
+      filename: '[name].js',
+      libraryTarget: 'umd'
     },
     resolve: {
         extensions: ['.ts', '.tsx', '.js']
