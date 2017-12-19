@@ -73,10 +73,72 @@
 				<blockquote>
 					<p>Scroll-n-react is a React Component Library for creating components that trigger functions at a certain scroll length. This is to create potentially infinite scrollers. There are other infinite scroller component libraries out ther but none that I have seen easily replicate features like the facebook messenger load more messages feature.</p>
 				</blockquote>
-				<h3 id="secondary-objective">Secondary Objective</h3>
-				<blockquote>
-					<p>Extract boilerplate for creating Javascript Libraries with Typescript. Checkout the boilerplate branch before its merged.</p>
-				</blockquote>
+				<p><a href="https://www.awlui.github.io/scroll-n-react">Demo</a>
+				<a href="https://www.awlui.github.io/scroll-n-react/docs/index.html">TypeDocs</a></p>
+				<pre><code>
+//Example you can check <span class="hljs-keyword">out</span> <span class="hljs-keyword">in</span> the example.tsx file. Just a real rough sketch of what using the component is like.
+<span class="hljs-variable">&lt;ScrollRx onRef={ref =&gt;</span> {this.child = ref}} height={<span class="hljs-number">300</span>} loader={Wave2} threshold={<span class="hljs-number">0</span>} width={<span class="hljs-number">250</span>} getMore={this.Foo} <span class="hljs-built_in">anchor</span>Bottom component={K} fetching={this.<span class="hljs-keyword">state</span>.fetching} dataArray={this.<span class="hljs-keyword">state</span>.dataArray}/&gt;
+</code></pre><table>
+					<thead>
+						<tr>
+							<th>Props</th>
+							<th style="text-align:center">Purpose</th>
+							<th style="text-align:right">type</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>onRef</td>
+							<td style="text-align:center">used to get a hold of the scroll instance to call its reset method</td>
+							<td style="text-align:right">Function</td>
+						</tr>
+						<tr>
+							<td>height</td>
+							<td style="text-align:center">Required prop that sets the height of the scroller</td>
+							<td style="text-align:right">Number</td>
+						</tr>
+						<tr>
+							<td>width</td>
+							<td style="text-align:center">Required prop that sets the width of the scroller</td>
+							<td style="text-align:right">Number</td>
+						</tr>
+						<tr>
+							<td>threshold</td>
+							<td style="text-align:center">Determines how far from the top or bottom that the scroller triggers its getMore callback</td>
+							<td style="text-align:right">Number</td>
+						</tr>
+						<tr>
+							<td>getMore</td>
+							<td style="text-align:center">The callback that should fetch more data via ajax or any other method, it should provide new props to the dataArray prop</td>
+							<td style="text-align:right">Function</td>
+						</tr>
+						<tr>
+							<td>anchorBottom/anchorTop</td>
+							<td style="text-align:center">Determines the orientation of the scroller. Anchorbottom makes it act a lot like facebook messenger&#39;s chat scrollers</td>
+							<td style="text-align:right">boolean</td>
+						</tr>
+						<tr>
+							<td>dataArray</td>
+							<td style="text-align:center">Array of objects.Each object MUST HAVE AN id property. This is used to coordinate the key feature and main motivation for this project. The id is used to hold a placeholder to the last top element after more data comes in instead of pulling your view up along with the new data.</td>
+							<td style="text-align:right">{id: any}Array</td>
+						</tr>
+						<tr>
+							<td>component</td>
+							<td style="text-align:center">Stateless component which will be filled with the data from dataArray</td>
+							<td style="text-align:right">Function</td>
+						</tr>
+						<tr>
+							<td>fetching</td>
+							<td style="text-align:center">prop you pass in that will display or hide the loader component. Use in tandem with getMore</td>
+							<td style="text-align:right">Boolean</td>
+						</tr>
+						<tr>
+							<td>loader</td>
+							<td style="text-align:center">A loader component that will show up when fetching is set to true. I provide a default <div>Loader</div>, but you can use something like react-better-spintkit to provide a better loader.</td>
+							<td style="text-align:right">Function</td>
+						</tr>
+					</tbody>
+				</table>
 			</div>
 		</div>
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
