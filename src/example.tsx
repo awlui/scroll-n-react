@@ -40,7 +40,7 @@ class TestRig extends React.Component<any, any> {
     if (this.state.fetching) {
       return;
     }
-    axios.get('https://randomuser.me/api/?results=1').then(({data}) => {
+    axios.get('https://randomuser.me/api/?results=2').then(({data}) => {
       let newstuff = data.results.map((result) => {
         return {
           ...result, id: count++
@@ -70,18 +70,18 @@ class TestRig extends React.Component<any, any> {
             }
           })
           this.setState({
-            dataArray: [...newstuff, ...this.state.dataArray]
+            dataArray: [...this.state.dataArray, ...newstuff]
           })
         })
-      }}>Click</button>
+      }}>Add2ToBottom</button>
       <button onClick={() => {
         this.child.reset();
-      }}>Click2</button>
+      }}>Reset scrollbar</button>
       <button onClick={() => {
         this.setState({
           dataArray: [...this.state.dataArray.slice(0,-1)]
         })
-      }}>Pop</button>
+      }}>PopOffBottom</button>
       </div>
     )
   }

@@ -88,7 +88,7 @@ describe("anchorTop and anchorBottom props", () => {
     let inst = wrapper.instance() as IScrollRx;
     expect(inst.main.scrollTop).toEqual(0);
   });
-  it("The reset method should position the scrollbar either up or down for anchorTop/anchorBottom, respectively", () => {
+  it("The reset method should position the scrollbar either up or down for anchorTop", () => {
     let wrapper = mount(<ScrollRx width={75} anchorTop height={75} component={null}/>);
     let inst = wrapper.instance() as IScrollRx;
     expect(inst.main.scrollTop).toEqual(0);
@@ -96,6 +96,14 @@ describe("anchorTop and anchorBottom props", () => {
     expect(inst.main.scrollTop).toEqual(10);
     inst.reset();
     expect(inst.main.scrollTop).toEqual(0);
+  });
+  it("The reset method should position the scrollbar either up or down for anchorBottom", () => {
+    let wrapper = mount(<ScrollRx width={75} anchorBottom height={75} component={null}/>);
+    let inst = wrapper.instance() as IScrollRx;
+    inst.main = {scrollTop: 5, scrollHeight: 100};
+    expect(inst.main.scrollTop).toEqual(5);
+    inst.reset();
+    expect(inst.main.scrollTop).toEqual(25);
   });
 });
 
@@ -146,20 +154,12 @@ describe("Placeholder registration", () => {
   let dummyComponent, wrapper;
   beforeEach(() => {
     dummyComponent = ({data}) => (<div className=".dummy">{data.val}</div>);
-    wrapper = mount(<ScrollRx width={75} anchorBottom height={75} threshold={0} dataArray={generateDataArray(5)} component={dummyComponent}/>);
-    wrapper.setProps({
-      dataArray: [{id: 5, val: 5}, ...generateDataArray(5)]
-    });
-  })
+    wrapper = shallow(<ScrollRx width={75} anchorBottom height={75} threshold={0} dataArray={generateDataArray(5)} component={dummyComponent}/>, {disableLifecycleMethods: true});
+  });
   it("On anchorBottom, the Component will hold on to the previous first Element before a prop update", () => {
-    // console.log(wrapper.childAt(0).childAt(2).html())
-    expect(wrapper.find('.placeholder').html()).toEqual(wrapper.childAt(0).childAt(1).html());
+    wrapper.instance().componentWillUpdate();
+    expect(wrapper.instance().placeholderID).toEqual(0);
   });
-  it("The placeholder ref will be filled with the correct HTMLElement after a prop update", () => {
-    // expect(wrapper.instance().placeholder).toEqual(wrapper.find('.placeholder'))
-    expect(wrapper.instance().placeholder.children[0].outerHTML).toEqual(wrapper.childAt(0).childAt(1).childAt(0).html());
-  });
-
 });
 
 describe("Loader component", () => {
@@ -171,6 +171,7 @@ describe("Loader component", () => {
        loader={(props) => (<div {...props}>LOAD</div>)}
        threshold={0} dataArray={generateDataArray(5)}
        component={dummyComponent}/>);
+       wrapper.instance().componentDidUpdate = () => {};
        expect(wrapper.find('.loader').children()).toHaveLength(0);
   })
   it("Will use what you pass into the loader prop", () => {
@@ -182,6 +183,7 @@ describe("Loader component", () => {
        fetching={true}
        threshold={0} dataArray={generateDataArray(5)}
        component={dummyComponent}/>);
+       wrapper.instance().componentDidUpdate = () => {};
        expect(wrapper.find('.loader').children()).toHaveLength(1);
        expect(wrapper.find('.loader').children().html()).toEqual('<div class="loader">LOAD</div>');
   });
@@ -193,8 +195,34 @@ describe("Loader component", () => {
        fetching={true}
        threshold={0} dataArray={generateDataArray(5)}
        component={dummyComponent}/>);
+       wrapper.instance().componentDidUpdate = () => {};
        expect(wrapper.find('.loader').children()).toHaveLength(1);
        expect(wrapper.find('.loader').children().html()).toEqual('<div class="loader">Loading...</div>');
 
-  })
+  });
+});
+
+describe("componentdidupdate", () => {
+    it("The reset method should position the scrollbar either up or down for anchorBottom", () => {
+      let dummyComponent = ({data}) => (<div className=".dummy">{data.val}</div>);
+      let wrapper = mount(<ScrollRx width={75} anchorBottom height={75} component={dummyComponent}/>);
+      let inst = wrapper.instance() as IScrollRx;
+      let mockCallback = jest.fn();
+      inst.main = {scrollTop: 5, scrollHeight: 100};
+      inst.setState = mockCallback;
+      inst.componentDidUpdate();
+      expect(mockCallback.mock.calls.length).toEqual(1);
+      expect(mockCallback.mock.calls[0][0]).toEqual({paddingTop: 0})
+    });
+    it("The reset method should position the scrollbar either up or down for anchorBottom", () => {
+      let dummyComponent = ({data}) => (<div className=".dummy">{data.val}</div>);
+      let wrapper = mount(<ScrollRx width={150} anchorBottom height={150} component={dummyComponent}/>);
+      let inst = wrapper.instance() as IScrollRx;
+      let mockCallback = jest.fn();
+      inst.main = {scrollTop: 5, scrollHeight: 100};
+      inst.setState = mockCallback;
+      inst.componentDidUpdate();
+      expect(mockCallback.mock.calls.length).toEqual(1);
+      expect(mockCallback.mock.calls[0][0]).toEqual({realHeight: 100, paddingTop: 50})
+    });
 })

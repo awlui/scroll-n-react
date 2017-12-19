@@ -38,8 +38,8 @@ export class ScrollRx extends React.Component<IScrollProps, IState> {
         paddingTop: 0,
       }
     }
-
     componentDidMount() {
+      console.log('mounted')
       let {onRef} = this.props;
       if (onRef) {
         onRef(this);
@@ -61,6 +61,7 @@ export class ScrollRx extends React.Component<IScrollProps, IState> {
     }
     }
     componentWillUnmount() {
+      console.log('unmounting')
       let {onRef} = this.props;
       if (onRef) {
         onRef(undefined);
@@ -76,17 +77,18 @@ export class ScrollRx extends React.Component<IScrollProps, IState> {
       }
     }
     shouldComponentUpdate(nextProps, nextState) {
+      console.log('shouldupdate')
       return (nextProps !== this.props) || nextState.realHeight !== this.state.realHeight
     }
     componentDidUpdate() {
-      console.log('yo')
+      console.log('didupdate')
       let {height, width, fetching} = this.props;
-      let {scrollHeight, offsetHeight} = this.main
+      let {scrollHeight} = this.main;
       let {paddingTop} = this.state;
+      console.log(this.props, this.main, this.state)
       let realHeight = scrollHeight-paddingTop;
+      console.log(realHeight)
       if (height > realHeight) {
-        console.log('mid', realHeight)
-
         this.setState({
           paddingTop: (height - realHeight),
           realHeight
@@ -104,14 +106,16 @@ export class ScrollRx extends React.Component<IScrollProps, IState> {
       }
     }
     componentWillUpdate() {
+      console.log('will update')
       let {dataArray, anchorBottom} = this.props;
       if (!!anchorBottom && dataArray && dataArray[0]) {
         this.placeholderID = dataArray[0].id;
       }
     }
     render() {
-      let {width = 0,
-        height = 0,
+      console.log('render')
+      let {width,
+        height,
         component,
         dataArray=[],
         getMore=this._defaultGetMore,
@@ -124,7 +128,6 @@ export class ScrollRx extends React.Component<IScrollProps, IState> {
       let Zcomponent = component;
       let Loader = loader
       let lastIndex = dataArray.length - 1;
-
       return (
       <div
         ref={(main) => {this.main = main;}}
@@ -144,7 +147,7 @@ export class ScrollRx extends React.Component<IScrollProps, IState> {
         {
           Zcomponent ? dataArray.map((data: IgetMoreData, i: number) => {
           return (data.id === this.placeholderID ?
-            (<div className='placeholder' key={data.id} ref={(placeholder) => this.placeholder = placeholder}><Zcomponent data={data}/></div>)
+            (<div className='placeholder' key={data.id} ref={(placeholder) => {this.placeholder = placeholder; console.log('placeholder attach')}}><Zcomponent data={data}/></div>)
              : <Zcomponent key={data.id} data={data}/>)
         })
         : <div>Error Add a component prop</div>
