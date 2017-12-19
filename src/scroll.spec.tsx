@@ -203,7 +203,7 @@ describe("Loader component", () => {
 });
 
 describe("componentdidupdate", () => {
-    it("The reset method should position the scrollbar either up or down for anchorBottom", () => {
+    it("Sets padding top to zero when scrollHeight is greater than the component height", () => {
       let dummyComponent = ({data}) => (<div className=".dummy">{data.val}</div>);
       let wrapper = mount(<ScrollRx width={75} anchorBottom height={75} component={dummyComponent}/>);
       let inst = wrapper.instance() as IScrollRx;
@@ -214,7 +214,7 @@ describe("componentdidupdate", () => {
       expect(mockCallback.mock.calls.length).toEqual(1);
       expect(mockCallback.mock.calls[0][0]).toEqual({paddingTop: 0})
     });
-    it("The reset method should position the scrollbar either up or down for anchorBottom", () => {
+    it("Sets paddingTop to difference of component height and height of contained elements", () => {
       let dummyComponent = ({data}) => (<div className=".dummy">{data.val}</div>);
       let wrapper = mount(<ScrollRx width={150} anchorBottom height={150} component={dummyComponent}/>);
       let inst = wrapper.instance() as IScrollRx;
