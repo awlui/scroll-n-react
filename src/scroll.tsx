@@ -39,7 +39,6 @@ export class ScrollRx extends React.Component<IScrollProps, IState> {
       }
     }
     componentDidMount() {
-      console.log('mounted')
       let {onRef} = this.props;
       if (onRef) {
         onRef(this);
@@ -61,7 +60,6 @@ export class ScrollRx extends React.Component<IScrollProps, IState> {
     }
     }
     componentWillUnmount() {
-      console.log('unmounting')
       let {onRef} = this.props;
       if (onRef) {
         onRef(undefined);
@@ -77,17 +75,13 @@ export class ScrollRx extends React.Component<IScrollProps, IState> {
       }
     }
     shouldComponentUpdate(nextProps, nextState) {
-      console.log('shouldupdate')
       return (nextProps !== this.props) || nextState.realHeight !== this.state.realHeight || (this.state.paddingTop !== nextState.paddingTop)
     }
     componentDidUpdate() {
-      console.log('didupdate')
       let {height, width, fetching} = this.props;
       let {scrollHeight} = this.main;
       let {paddingTop} = this.state;
-      console.log(this.props, this.main.scrollHeight, this.state)
       let realHeight = scrollHeight-paddingTop;
-      console.log(realHeight, 'realHeight')
       if (height > realHeight) {
         this.setState({
           paddingTop: (height - realHeight),
@@ -106,14 +100,12 @@ export class ScrollRx extends React.Component<IScrollProps, IState> {
       }
     }
     componentWillUpdate() {
-      console.log('will update')
       let {dataArray, anchorBottom} = this.props;
       if (!!anchorBottom && dataArray && dataArray[0]) {
         this.placeholderID = dataArray[0].id;
       }
     }
     render() {
-      console.log('render')
       let {width,
         height,
         component,
@@ -140,7 +132,7 @@ export class ScrollRx extends React.Component<IScrollProps, IState> {
                 wordWrap: 'break-word'
               }}>
         {
-          fetching && anchorBottom ? <Loader style={{ color: 'red'}} className='loader'/> : null
+          fetching && anchorBottom ? <Loader className='loader'/> : null
         }
         {
           Zcomponent ? dataArray.map((data: IgetMoreData, i: number) => {

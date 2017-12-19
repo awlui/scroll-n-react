@@ -3,7 +3,6 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const path = require('path');
-console.log(process.cwd(), 'here')
 const PATHS = {
   demo: path.join(process.cwd(), 'demo'),
 };
@@ -24,7 +23,7 @@ module.exports = merge([
       template: './src/public/index.html'
     })
   ],
-  devtool: 'eval',
+  devtool: 'none',
 
 }
 
