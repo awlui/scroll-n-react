@@ -64,5 +64,5 @@ interface IgetMoreData {
   id: number
 }
 export {
-  IState, IScrollProps, IScrollRx, IgetMoreData, datum
+  IState, IScrollProps, IScrollRx, IgetMoreData
 }
