@@ -4,6 +4,10 @@
   "main": "build/index.js",
   "author": "Andy Lui <awlui2014@gmail.com>",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/awlui/scroll-n-react"
+  },
   "dependencies": {
     "@types/enzyme": "^3.1.6",
     "@types/enzyme-adapter-react-16": "^1.0.1",
