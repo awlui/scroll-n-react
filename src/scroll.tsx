@@ -1,7 +1,6 @@
 import * as React from 'react';
 import {IScrollProps, IState, IScrollRx, IgetMoreData} from './interfaces/scroll.interface';
 
-
 /**
 Notes
 scrollHeight: length of entire scrollable area;
@@ -77,7 +76,10 @@ export class ScrollRx extends React.Component<IScrollProps, IState> {
     shouldComponentUpdate(nextProps, nextState) {
       return (nextProps !== this.props) || nextState.realHeight !== this.state.realHeight || (this.state.paddingTop !== nextState.paddingTop)
     }
-    componentDidUpdate() {
+    componentDidUpdate(prevProps) {
+      if (prevProps.dataArray.length === 0 && this.props.anchorBottom) {
+          this.main.scrollTop = this.main.scrollHeight - this.props.height
+      }
       let {height, width, fetching} = this.props;
       let {scrollHeight} = this.main;
       let {paddingTop} = this.state;
@@ -126,9 +128,9 @@ export class ScrollRx extends React.Component<IScrollProps, IState> {
         onScroll={this._onScroll.bind(this, getMore)}
         className={className}
         style={{paddingTop: this.state.paddingTop,
-                maxHeight: height, width,
+                maxHeight: height,
+                width,
                 overflowY: 'scroll',
-                backgroundColor: 'rgba(245,245,220,1)',
                 wordWrap: 'break-word'
               }}>
         {

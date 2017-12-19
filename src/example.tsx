@@ -2,6 +2,7 @@ import {ScrollRx} from './scroll';
 import * as ReactDOM from 'react-dom';
 import * as React from 'react';
 import  axios from 'axios';
+let styles = require('./App.scss');
 import {
   Wave
 } from 'better-react-spinkit';
@@ -65,7 +66,7 @@ class TestRig extends React.Component<any, any> {
   render() {
     return(
       <div className={this.props.className}>
-      <ScrollRx onRef={ref => {this.child = ref}} height={300} loader={Wave2} threshold={0} width={250} getMore={this.Foo} anchorBottom component={K} fetching={this.state.fetching} dataArray={this.state.dataArray}/>
+      <ScrollRx onRef={ref => {this.child = ref}} className={styles.scroll} height={300} loader={Wave2} threshold={0} width={250} getMore={this.Foo} anchorBottom component={K} fetching={this.state.fetching} dataArray={this.state.dataArray}/>
       <button onClick={() => {
         axios.get('https://randomuser.me/api/?results=1').then(({data}) => {
           let newstuff = data.results.map((result) => {
