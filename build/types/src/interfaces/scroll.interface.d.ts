@@ -10,6 +10,7 @@ interface IScrollRx extends React.Component {
 interface IState {
     paddingTop: number;
     threshold?: number;
+    realHeight?: number;
 }
 interface IScrollProps extends React.Props<ScrollRx> {
     /**
@@ -29,7 +30,9 @@ interface IScrollProps extends React.Props<ScrollRx> {
     /**
     *  An array of data that may come initially or upon subsequent getMore requests.
     */
-    dataArray?: any[];
+    dataArray?: {
+        id: number;
+    }[];
     /**
     * Determines how many pixels from the bottom or top that the getMore function should fire.
     */

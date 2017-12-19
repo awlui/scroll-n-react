@@ -27,6 +27,7 @@ export declare class ScrollRx extends React.Component<IScrollProps, IState> {
     componentDidMount(): void;
     componentWillUnmount(): void;
     reset(): void;
+    shouldComponentUpdate(nextProps: any, nextState: any): boolean;
     componentDidUpdate(): void;
     componentWillUpdate(): void;
     render(): JSX.Element;
