@@ -9,5 +9,5 @@
     "skipLibCheck": true,
     "jsx": "react"
   },
-  "include": ["./src"]
+  "include": ["./src/scroll.tsx"]
 }

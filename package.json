@@ -9,8 +9,7 @@
     "@types/enzyme-adapter-react-16": "^1.0.1",
     "@types/jest": "^21.1.8",
     "@types/react-dom": "^16.0.3",
-    "better-react-spinkit": "^2.0.4",
-    "lodash": "^4.17.4"
+    "better-react-spinkit": "^2.0.4"
   },
   "files": [
     "build",
@@ -57,7 +56,7 @@
     "postbuild:demo": "typedoc --out demo/docs src --exclude '**/*.spec.tsx'",
     "test": "jest",
     "sass": "sass --watch src/styles/scss:src/public/styles",
-    "build:demo": "webpack --config config/webpack.config.js --env demo"
+    "build:demo": "webpack-dev-server --config config/webpack.config.js --env demo"
   },
   "jest": {
     "transform": {
