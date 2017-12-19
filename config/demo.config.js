@@ -24,7 +24,7 @@ module.exports = merge([
       template: './src/public/index.html'
     })
   ],
-  devtool: 'none',
+  devtool: 'eval',
 
 }
 

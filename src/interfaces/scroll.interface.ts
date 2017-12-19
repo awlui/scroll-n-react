@@ -8,7 +8,8 @@ interface IScrollRx extends React.Component {
 }
 interface IState {
   paddingTop: number,
-  threshold?: number
+  threshold?: number,
+  realHeight?: number
 }
 
 interface IScrollProps extends React.Props<ScrollRx> {

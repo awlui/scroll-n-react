@@ -17,16 +17,15 @@
   ],
   "devDependencies": {
     "@types/sinon": "^4.1.2",
+    "axios": "^0.17.1",
     "clean-webpack-plugin": "^0.1.17",
     "css-loader": "^0.28.7",
     "enzyme": "^3.2.0",
     "enzyme-adapter-react-16": "^1.1.0",
     "extract-text-webpack-plugin": "^3.0.2",
-    "fetch": "^1.1.0",
     "html-webpack-plugin": "^2.30.1",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^21.2.1",
-    "lodash": "^4.17.4",
     "node-sass": "^4.7.2",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
@@ -54,9 +53,10 @@
     "start": "webpack-dev-server --config config/webpack.config.js --env development",
     "build": "webpack --config config/webpack.config.js --env production",
     "postbuild": "typedoc --out build/docs src --exclude '**/*.spec.tsx'",
+    "postbuild:demo": "typedoc --out demo/docs src --exclude '**/*.spec.tsx'",
     "test": "jest",
     "sass": "sass --watch src/styles/scss:src/public/styles",
-    "build:demo": "webpack --config config/webpack.config.js --env demo"
+    "build:demo": "webpack-dev-server --config config/webpack.config.js --env demo"
   },
   "jest": {
     "transform": {

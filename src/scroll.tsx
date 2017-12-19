@@ -45,8 +45,8 @@ export class ScrollRx extends React.Component<IScrollProps, IState> {
         onRef(this);
       }
       this.setState({
-        paddingTop: (this.props.height > this.main.scrollHeight) ? (this.props.height - this.main.scrollHeight) : 0
-      });
+        paddingTop: 0
+      })
       let {anchorBottom, anchorTop=(anchorBottom ? false : true), threshold = 0} = this.props;
       if (!!anchorBottom) {
       this.main.scrollTop = this.main.scrollHeight - this.props.height;
@@ -75,10 +75,29 @@ export class ScrollRx extends React.Component<IScrollProps, IState> {
         this.main.scrollTop = 0;
       }
     }
+    shouldComponentUpdate(nextProps, nextState) {
+      return (nextProps !== this.props) || nextState.realHeight !== this.state.realHeight
+    }
     componentDidUpdate() {
+      console.log('yo')
       let {height, width, fetching} = this.props;
+      let {scrollHeight, offsetHeight} = this.main
+      let {paddingTop} = this.state;
+      let realHeight = scrollHeight-paddingTop;
+      if (height > realHeight) {
+        console.log('mid', realHeight)
+
+        this.setState({
+          paddingTop: (height - realHeight),
+          realHeight
+        })
+      } else {
+        this.setState({
+          paddingTop: 0
+        })
+      }
       let {anchorBottom, anchorTop=(anchorBottom ? false : true)} = this.props;
-      if (this.placeholder && !fetching && anchorBottom) {
+      if (this.placeholder && !fetching && anchorBottom && height < scrollHeight) {
         if (this.main.scrollTop < (this.placeholder.offsetTop - this.main.offsetTop)) {
           this.main.scrollTop = (this.placeholder.offsetTop - this.main.offsetTop)
         }
@@ -86,7 +105,7 @@ export class ScrollRx extends React.Component<IScrollProps, IState> {
     }
     componentWillUpdate() {
       let {dataArray, anchorBottom} = this.props;
-      if (!!anchorBottom && dataArray) {
+      if (!!anchorBottom && dataArray && dataArray[0]) {
         this.placeholderID = dataArray[0].id;
       }
     }
@@ -116,7 +135,8 @@ export class ScrollRx extends React.Component<IScrollProps, IState> {
                 overflowY: 'scroll',
                 padding: 0,
                 margin: 0,
-                backgroundColor: 'rgba(245,245,220,1)'
+                backgroundColor: 'rgba(245,245,220,1)',
+                wordWrap: 'break-word'
               }}>
         {
           fetching && anchorBottom ? <Loader className='loader'/> : null
