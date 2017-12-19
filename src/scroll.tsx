@@ -78,16 +78,16 @@ export class ScrollRx extends React.Component<IScrollProps, IState> {
     }
     shouldComponentUpdate(nextProps, nextState) {
       console.log('shouldupdate')
-      return (nextProps !== this.props) || nextState.realHeight !== this.state.realHeight
+      return (nextProps !== this.props) || nextState.realHeight !== this.state.realHeight || (this.state.paddingTop !== nextState.paddingTop)
     }
     componentDidUpdate() {
       console.log('didupdate')
       let {height, width, fetching} = this.props;
       let {scrollHeight} = this.main;
       let {paddingTop} = this.state;
-      console.log(this.props, this.main, this.state)
+      console.log(this.props, this.main.scrollHeight, this.state)
       let realHeight = scrollHeight-paddingTop;
-      console.log(realHeight)
+      console.log(realHeight, 'realHeight')
       if (height > realHeight) {
         this.setState({
           paddingTop: (height - realHeight),
@@ -136,18 +136,16 @@ export class ScrollRx extends React.Component<IScrollProps, IState> {
         style={{paddingTop: this.state.paddingTop,
                 maxHeight: height, width,
                 overflowY: 'scroll',
-                padding: 0,
-                margin: 0,
                 backgroundColor: 'rgba(245,245,220,1)',
                 wordWrap: 'break-word'
               }}>
         {
-          fetching && anchorBottom ? <Loader className='loader'/> : null
+          fetching && anchorBottom ? <Loader style={{ color: 'red'}} className='loader'/> : null
         }
         {
           Zcomponent ? dataArray.map((data: IgetMoreData, i: number) => {
           return (data.id === this.placeholderID ?
-            (<div className='placeholder' key={data.id} ref={(placeholder) => {this.placeholder = placeholder; console.log('placeholder attach')}}><Zcomponent data={data}/></div>)
+            (<div className='placeholder' key={data.id} ref={(placeholder) => {this.placeholder = placeholder;}}><Zcomponent data={data}/></div>)
              : <Zcomponent key={data.id} data={data}/>)
         })
         : <div>Error Add a component prop</div>
