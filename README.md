@@ -6,7 +6,7 @@
 > Scroll-n-react is a React Component Library for creating components that trigger functions at a certain scroll length. This is to create potentially infinite scrollers. There are other infinite scroller component libraries out ther but none that I have seen easily replicate features like the facebook messenger load more messages feature.
 
 [Demo](https://awlui.github.io/scroll-n-react/)
-[TypeDocs](https://www.awlui.github.io/scroll-n-react/docs/index.html)
+[TypeDocs](https://awlui.github.io/scroll-n-react/docs/index.html)
 ```
 
 //Example you can check out in the example.tsx file. Just a real rough sketch of what using the component is like.
