@@ -25,7 +25,7 @@ class TestRig extends React.Component<any, any> {
     }
   }
   componentDidMount() {
-    axios.get('https://randomuser.me/api/?results=5').then((stuff) =>
+    axios.get('https://randomuser.me/api/?results=10').then((stuff) =>
       {
         let newstuff = stuff.data.results.map((result) => {
           return {

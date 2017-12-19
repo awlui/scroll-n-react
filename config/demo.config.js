@@ -1,7 +1,7 @@
 const merge = require('webpack-merge');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const path = require('path');
 const PATHS = {
   demo: path.join(process.cwd(), 'demo'),
@@ -21,7 +21,8 @@ module.exports = merge([
     }),
     new HtmlWebpackPlugin({
       template: './src/public/index.html'
-    })
+    }),
+    new UglifyJSPlugin()
   ],
   devtool: 'none',
 
